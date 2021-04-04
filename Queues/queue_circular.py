@@ -4,8 +4,8 @@
 ''' ------------------------------ FIRST IN FIRST OUT (FIFO) -------------------------------'''
 
 class Queue:
-	def __init__(self, capacity):
-		self.list = [None for _ in range(capacity)] # O(n) time and space
+	def __init__(self, capacity):  # O(1) time and O(n) space
+		self.list = capacity * [None] 
 		self.capacity = capacity
 		self.top = -1	 # -------- Dequeue and peek at the top
 		self.bottom = -1 # -------- Enqueue at the bottom
@@ -87,7 +87,7 @@ class Queue:
 		else:
 			return "List is empty"
 
-	def delete(self): # O(n) time and space
-		self.list = [None for _ in range(self.capacity)]
+	def delete(self): # O(1) time and O(n) space
+		self.list = self.capacity * [None] 
 		self.top = -1
 		self.bottom = -1 

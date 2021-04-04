@@ -17,7 +17,7 @@ class Queue:
 		else:
 			return True
 
-	def enqueue(self, value): # O(1) time and space
+	def enqueue(self, value): # Amotized O(1) time and O(1) space
 		self.list.append(value)
 
 	def peek(self): # O(1) time and space
