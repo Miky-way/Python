@@ -5,21 +5,20 @@ class Node: # This would be the node structure for the list
 		self.value = value
 		self.next = None
 
-class SinglyLinkedList: # The main list class
+class CircularSinglyLinkedList: # The main list class
 
 	def __init__(self):
 		self.head = None
 		self.tail = None
-		self._size_ = 0 
+		self._size_ = 0
 
 	def __iter__(self): # An iterable function that allows iteration of the list items
 		node = self.head
-		while node:
-			yield node
+		while node != self.tail:
+			yield node.value
 			node = node.next
-
-	def __len__(self):
-		return self._size_
+		else:
+			yield node.value
 
 	def size(self): # Returns the current size of the linked list
 		return self._size_
@@ -27,24 +26,24 @@ class SinglyLinkedList: # The main list class
 	def aslist(self): # Converst the singlylinkedlist to ordinary list
 		list = []
 		node = self.head
-		while node:
+		while node != self.tail:
 			list.append(node.value)
 			node = node.next
+		else:
+			list.append(node.value) # This appends the last node to the list
 
 		return list # O(n) time and space complexity
-
-	def fromlist(self, list):
-		for i in list:
-			self.append(i)
 
 	def append(self, value): # Method appends node to the end of the linked list
 		node = Node(value)
 		if self._size_ == 0:
 			self.head = node
 			self.tail = node
+			node.next = node
 		else:
 			self.tail.next = node
 			self.tail = node
+			node.next = self.head
 
 		self._size_ += 1
 		return self._size_ - 1 # O(1) time and space complexity
@@ -77,12 +76,15 @@ class SinglyLinkedList: # The main list class
 		node = self.head
 
 		count = 0
-		while node:
+		while node != self.tail:
 			if count == index:
 				return node.value 
 
 			count += 1
 			node = node.next
+		else:
+			if count == index:
+				return node.value
 
 		return None # O(n) time complexity O(1) space complexity
 
@@ -90,12 +92,15 @@ class SinglyLinkedList: # The main list class
 		node = self.head
 
 		index = 0
-		while node:
+		while node != self.tail:
 			if node.value == value:
 				return index
 
 			index += 1
 			node = node.next
+		else:
+			if node.value == value:
+				return index
 
 		return None # O(n) time complexity O(1) space complexity
 
@@ -111,7 +116,7 @@ class SinglyLinkedList: # The main list class
 			if self.tail == formerNode:
 				self.tail = newNode
 
-			del(formerNode)
+			# del(formerNode) No need for this, gabage collector will do the cleaning
 			return True  # O(1) time and space complexity
 		elif index > 0:
 			formerNode = self.head
@@ -126,7 +131,7 @@ class SinglyLinkedList: # The main list class
 			if self.tail == formerNode:
 				self.tail = newNode
 
-			del(formerNode)
+			# del(formerNode) No need for this, gabage collector will do the cleaning
 			return True # O(n) time and O(1) space complexity
 		else:
 			return False
@@ -137,12 +142,14 @@ class SinglyLinkedList: # The main list class
 		elif index == 0:
 			nodeToDel = self.head
 			self.head = nodeToDel.next
+			self.tail.next = nodeToDel.next
+			nodeToDel.next = None
 			if self.tail == nodeToDel:
 				self.tail = nodeToDel.next
 
 			value = nodeToDel.value
 			self._size_ -= 1
-			del(nodeToDel)
+			# del(nodeToDel) No need for this, gabage collector will do the cleaning
 			return value  # O(1) time and space complexity
 		elif index > 0:
 			nodeTD = self.head
@@ -153,12 +160,13 @@ class SinglyLinkedList: # The main list class
 				count += 1
 
 			nodeB4NTD.next = nodeTD.next
+			nodeTD.next = None
 			if self.tail == nodeTD:
 				self.tail = nodeB4NTD
 
 			value = nodeTD.value
 			self._size_ -= 1
-			del(nodeTD)
+			# del(nodeTD) No need for this, gabage collector will do the cleaning
 			return value # O(n) time and O(1) space complexity
 		else:
 			return None
@@ -172,45 +180,35 @@ class SinglyLinkedList: # The main list class
 
 		if nodeTD.value == value:
 			self.head = nodeTD.next
+			self.tail.next = nodeTD.next
+			nodeTD.next = None
 			if self.tail == nodeTD:
 				self.tail = nodeTD.next
 
 			self._size_ -= 1
-			del(nodeTD)
+			# del(nodeTD) Gabage collector does the cleaning, so no need for this
 			return index
 
-		while nodeTD:
+		while nodeTD != self.tail:
 			nodeB4NTD = nodeTD
 			nodeTD = nodeTD.next
 			index += 1
 			if nodeTD.value == value:
 				nodeB4NTD.next = nodeTD.next
+				nodeTD.next = None
 				if self.tail == nodeTD:
 					self.tail = nodeB4NTD
 
 				self._size_ -= 1
-				del(nodeTD)
+				# del(nodeTD) Gabage collector does the cleaning, so no need for this
 				return index
 
-		return None # O(n) time and O(1) space 
-
-	def reverse(self):
-		headnode = self.head
-		node = self.head
-		if headnode: node = node.next
-
-		while node: 
-			self.insert(node.value, 0)
-			currentnode = node
-			node = node.next
-
-			del(currentnode)
-
-		if headnode: headnode.next = None
-		self.tail = headnode
- 		# O(n) time and O(1) space
+		return None # O(n) time and O(1) space complexity
 
 	def clear(self): # Clears the list
+		if self.tail:
+			self.tail.next = None
+			
 		self.head = None
 		self.tail = None
 		self._size_ = 0
