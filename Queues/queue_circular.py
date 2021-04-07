@@ -87,7 +87,7 @@ class Queue:
 		else:
 			return "List is empty"
 
-	def delete(self): # O(1) time and O(n) space
+	def delete(self): # O(1) time and space
 		self.list = self.capacity * [None] 
 		self.top = -1
 		self.bottom = -1 

@@ -13,3 +13,8 @@ print(hash(tuple1), hash(tuple2))
 # UNDERSTAND MEMORY LOCATIONS
 # HASHING AND HASH VALUES
 # id() FUNTION IN PYTHON
+
+
+print("Printing some value")
+for i in range(10, 5):
+	print(i)
