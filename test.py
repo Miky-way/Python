@@ -41,3 +41,13 @@ def sum_axis(A, index, axis=0):
 
     return r_sum
 
+def price_change(old_price, new_price):
+    p_change = new_price - old_price
+    return p_change * 100 / old_price
+
+def get_current_price(invested_price, price_change):
+    return (invested_price * price_change / 100) + invested_price
+
+print(price_change(0.000222, 0.03153296))
+
+print("Current price is {}".format(get_current_price(50000, price_change(0.000222, 0.03153296))))

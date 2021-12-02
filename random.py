@@ -193,3 +193,15 @@ print('Sum with pom=7: ', cal_total_time(A, 7))
 
 
 
+
+
+
+# Find common char
+def common_chars(str1, str2):
+    str1 = set(str1) # Returns all unique characters in str1 as a set
+    common_chars = set()
+    for char in str2:
+        if char in str1:
+            common_chars.add(char)
+    return common_chars
+
