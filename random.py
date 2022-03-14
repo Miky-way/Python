@@ -204,4 +204,3 @@ def common_chars(str1, str2):
         if char in str1:
             common_chars.add(char)
     return common_chars
-
